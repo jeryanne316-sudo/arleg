@@ -9,308 +9,246 @@
 *{box-sizing:border-box;font-family:monospace}
 body{
   margin:0;
-  background:#030303;
-  color:#ddd;
+  background:#010101;
+  color:#e6e6e6;
   overflow-x:hidden;
+  cursor:crosshair;
 }
 
 /* ===== LOADER ===== */
 #loader{
   position:fixed;
   inset:0;
-  background:radial-gradient(circle at center,#0b0b0b,#000);
+  background:radial-gradient(circle,#0b0b0b,#000);
   display:flex;
-  justify-content:center;
   align-items:center;
-  z-index:50;
-  overflow:hidden;
+  justify-content:center;
+  z-index:100;
 }
 #logo{
   font-size:5rem;
-  letter-spacing:16px;
-  animation:stress 1.2s infinite;
+  letter-spacing:18px;
+  animation:panic 1.1s infinite;
 }
-@keyframes stress{
-  0%{transform:scale(1);text-shadow:0 0 12px #ff3333}
-  50%{transform:scale(1.04);text-shadow:0 0 28px #3366ff}
-  100%{transform:scale(1);text-shadow:0 0 12px #ff3333}
+@keyframes panic{
+  0%{transform:scale(1) rotate(0deg);text-shadow:0 0 12px #f33}
+  50%{transform:scale(1.06) rotate(.7deg);text-shadow:0 0 30px #36f}
+  100%{transform:scale(1) rotate(0deg);text-shadow:0 0 12px #f33}
 }
-canvas.shards{position:absolute;inset:0}
 
-/* ===== MAIN ===== */
-main{
-  padding:120px 10%;
+/* ===== BACKGROUND ===== */
+#bg{position:fixed;inset:0;z-index:-3}
+#noise{
+  position:fixed;
+  inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:-2;
+}
+
+/* ===== SITE ===== */
+#site{
   opacity:0;
-  transform:translateY(-120px);
-  transition:1.6s cubic-bezier(.2,.9,.1,1);
+  transform:translateY(-140px);
+  transition:1.6s ease;
+  padding:140px 6%;
 }
-main.show{opacity:1;transform:translateY(0)}
+#site.show{opacity:1;transform:translateY(0)}
 
-h2{
-  margin-top:110px;
-  border-left:5px solid #333;
-  padding-left:16px;
+.intro{
+  max-width:720px;
+  font-size:1.1rem;
+  line-height:1.5;
 }
 
-.card{
+/* ===== CHAOTIC BLOCKS ===== */
+.block{
+  position:absolute;
   background:#0c0c0c;
-  border:1px solid #1f1f1f;
-  padding:26px;
-  margin-top:22px;
-  opacity:0;
-  transform:translateY(60px);
-  animation:slam 1s ease forwards;
+  border:1px solid #222;
+  padding:22px;
+  width:280px;
+  transform:rotate(var(--r));
+  cursor:grab;
+  user-select:none;
+  animation:float 4s ease-in-out infinite;
 }
-@keyframes slam{
-  0%{opacity:0;transform:translateY(80px)}
-  70%{opacity:1;transform:translateY(-6px)}
-  100%{transform:translateY(0)}
+.block:active{cursor:grabbing}
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(var(--r))}
+  50%{transform:translateY(-10px) rotate(calc(var(--r) + .5deg))}
 }
 
-.buttons{
-  display:flex;
-  gap:22px;
-  flex-wrap:wrap;
-  margin-top:50px;
-}
+/* ===== BUTTONS ===== */
 button{
   background:#111;
-  color:#fff;
   border:1px solid #333;
-  padding:16px 34px;
+  color:#fff;
+  padding:14px 30px;
   cursor:pointer;
-  transition:.15s;
+  transition:.2s;
 }
 button:hover{
-  transform:scale(1.08) rotate(-.4deg);
-  box-shadow:0 0 18px rgba(255,80,80,.2);
+  transform:scale(1.1) rotate(-1deg);
+  box-shadow:0 0 20px rgba(255,80,80,.25);
 }
-button:disabled{
-  opacity:.35;
-  cursor:not-allowed;
-}
+button:disabled{opacity:.35}
 
-/* ===== MODAL ===== */
-.modal{
+/* ===== SHOP ===== */
+#shop{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,.92);
   display:none;
   align-items:center;
   justify-content:center;
+  z-index:50;
 }
-.modal.show{display:flex}
-.modal-content{
-  background:#0f0f0f;
+#shop.show{display:flex}
+#shop div{
+  background:#111;
+  padding:40px;
   border:1px solid #333;
-  padding:42px;
-  max-width:520px;
-  animation:drift 4s infinite;
+  animation:wobble 3s infinite;
 }
-@keyframes drift{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-14px)}
+@keyframes wobble{
+  0%,100%{transform:rotate(0deg)}
+  50%{transform:rotate(1deg)}
 }
-
-/* ===== BACKGROUND ===== */
-#bg{position:fixed;inset:0;z-index:-1}
 </style>
 </head>
 
 <body>
 
-<div id="loader">
-  <div id="logo">ARLEG</div>
-  <canvas class="shards"></canvas>
-</div>
-
+<div id="loader"><div id="logo">ARLEG</div></div>
 <canvas id="bg"></canvas>
+<div id="noise"></div>
 
-<main id="site">
+<div id="site">
 
-<p style="max-width:760px">
-ARLEG is a physics-driven combat sandbox.<br>
-You don’t trigger attacks.<br>
-You *become* the weapon.
-</p>
-
-<p style="opacity:.55">
-No tutorials holding your hand.<br>
-No safe animations.<br>
-Only consequence.
-</p>
-
-<div class="buttons">
-  <button onclick="openShop()">SHOP</button>
-  <button onclick="scrollToInfo()">INFORMATION</button>
-  <button disabled title="Soon. Probably.">DOWNLOAD (COMING SOON)</button>
+<div class="intro">
+ARLEG is a physics combat sandbox.<br>
+You don’t press attacks.<br>
+You drag limbs.<br><br>
+This site behaves like the game.
 </div>
 
-<h2 id="info">Controls</h2>
-<div class="card">
+<div style="margin-top:40px">
+<button onclick="openShop()">SHOP</button>
+<button disabled>DOWNLOAD (COMING SOON)</button>
+</div>
+
+<!-- CHAOTIC BLOCKS -->
+<div class="block" style="top:360px;left:6%;--r:-3deg">
+<strong>Controls</strong>
 <ul>
-<li>Left Click (Hold) – Left arm</li>
-<li>Right Click (Hold) – Right arm</li>
+<li>Mouse – Move limbs</li>
+<li>Left / Right Click – Arms</li>
 <li>Q / E – Grab</li>
-<li>R – Switch leg control</li>
+<li>R – Switch legs</li>
 </ul>
 </div>
 
-<h2>Why ARLEG Exists</h2>
-<div class="card">
+<div class="block" style="top:540px;left:42%;--r:2deg">
+<strong>Why ARLEG</strong>
 <p>
-Games polish chaos away.<br>
-ARLEG keeps it.
-</p>
-<p>
-Every win is messy.<br>
-Every loss is physical.
+No animation safety.<br>
+No clean victories.<br>
+You fight physics.
 </p>
 </div>
 
-<h2>Alpha / Demo</h2>
-<div class="card">
-<ul>
-<li>Unstable mechanics</li>
-<li>Unfair encounters</li>
-<li>Systems still forming</li>
-</ul>
-<p style="opacity:.55">
-If you want finished — wait.<br>
-If you want influence — don’t.
-</p>
-</div>
-
-<h2>What to Expect</h2>
-<div class="card">
-<strong>Progression</strong>
+<div class="block" style="top:760px;left:18%;--r:-1deg">
+<strong>What To Expect</strong>
 <p>
-Coins earned through fights, missions, and challenges.
-Optional purchases may appear later — but mastery is earned,
-not bought.
+Coins from fights & missions.<br>
+Stats affect real motion.<br>
+Bosses have weight.
 </p>
 </div>
 
-<div class="card">
-<strong>Stats</strong>
+<div class="block" style="top:980px;left:55%;--r:3deg">
+<strong>Platforms</strong>
 <p>
-Strength affects impact. Agility affects recovery.
-Balance affects survival.
-Stats change physics — not UI numbers.
+PC direct download.<br>
+Steam… maybe.<br>
+<span style="opacity:.5">(please donate)</span>
 </p>
 </div>
 
-<div class="card">
-<strong>Story</strong>
-<p>
-A broken world told through levels and bosses.
-No exposition dumps.
-The environment explains itself.
-</p>
 </div>
 
-<h2>Platform Status</h2>
-<div class="card">
-<p>
-<strong>PC (Direct)</strong><br>
-Sold directly to players who were curious enough to be here.
-</p>
-
-<p style="margin-top:22px">
-<strong>Steam</strong><br>
-Coming to Steam…<br>
-<span style="opacity:.6">(maybe)</span><br>
-<span style="opacity:.4">(please donate)</span>
-</p>
-</div>
-
-<footer style="margin-top:180px;opacity:.35;text-align:center">
-ARLEG © Experimental Sandbox<br>
-You weren’t supposed to find this yet.
-</footer>
-
-</main>
-
-<div class="modal" id="shop">
-  <div class="modal-content">
+<!-- SHOP -->
+<div id="shop">
+  <div>
     <h2>Shop</h2>
     <p>Suits. Cosmetics. Modifiers.</p>
-    <p><strong>Not Ready.</strong></p>
+    <p><strong>Coming later.</strong></p>
     <button onclick="closeShop()">Close</button>
   </div>
 </div>
 
 <script>
-/* SHATTER INTRO */
-const loader=document.getElementById("loader");
-const site=document.getElementById("site");
-const c=document.querySelector(".shards");
-const ctx=c.getContext("2d");
-c.width=innerWidth;c.height=innerHeight;
-
-let shards=[...Array(180)].map(()=>({
-  x:innerWidth/2,y:innerHeight/2,
-  vx:(Math.random()-.5)*18,
-  vy:(Math.random()-1)*18,
-  r:Math.random()*4+2
-}));
-
-setTimeout(()=>{
-  document.getElementById("logo").style.display="none";
-  function explode(){
-    ctx.clearRect(0,0,c.width,c.height);
-    shards.forEach(p=>{
-      p.vy+=0.55;
-      p.x+=p.vx;p.y+=p.vy;
-      ctx.fillStyle=Math.random()>.5?"#ff3b3b":"#3b6bff";
-      ctx.beginPath();
-      ctx.moveTo(p.x,p.y);
-      ctx.lineTo(p.x+p.r*2,p.y+p.r);
-      ctx.lineTo(p.x-p.r,p.y+p.r*2);
-      ctx.fill();
-    });
-    requestAnimationFrame(explode);
-  }
-  explode();
-},1600);
-
+/* LOADER */
 setTimeout(()=>{
   loader.style.display="none";
   site.classList.add("show");
-},4200);
+},2000);
 
-/* LIVING BACKGROUND */
+/* BACKGROUND LIFE */
 const bg=document.getElementById("bg");
 const b=bg.getContext("2d");
 bg.width=innerWidth;bg.height=innerHeight;
-let pts=[...Array(120)].map(()=>({
+let pts=[...Array(180)].map(()=>({
   x:Math.random()*bg.width,y:Math.random()*bg.height,
-  vx:(Math.random()-.5),vy:(Math.random()-.5)
+  vx:(Math.random()-.5)*1.2,vy:(Math.random()-.5)*1.2
 }));
-let m={x:bg.width/2,y:bg.height/2};
-addEventListener("mousemove",e=>{m.x=e.clientX;m.y=e.clientY});
 function loop(){
   b.clearRect(0,0,bg.width,bg.height);
   pts.forEach(p=>{
-    let dx=m.x-p.x,dy=m.y-p.y;
-    p.vx+=dx*.000008;p.vy+=dy*.000008;
     p.x+=p.vx;p.y+=p.vy;
-    b.fillStyle="rgba(120,80,255,.22)";
+    if(p.x<0||p.x>bg.width)p.vx*=-1;
+    if(p.y<0||p.y>bg.height)p.vy*=-1;
+    b.fillStyle="rgba(120,80,255,.3)";
     b.fillRect(p.x,p.y,2,2);
   });
   requestAnimationFrame(loop);
 }
 loop();
 
+/* DRAGGABLE BLOCKS */
+document.querySelectorAll(".block").forEach(el=>{
+  let ox,oy,drag=false;
+  el.onmousedown=e=>{
+    drag=true;
+    ox=e.offsetX;oy=e.offsetY;
+    el.style.zIndex=99;
+  };
+  document.onmouseup=()=>drag=false;
+  document.onmousemove=e=>{
+    if(drag){
+      el.style.left=e.pageX-ox+"px";
+      el.style.top=e.pageY-oy+"px";
+    }
+  };
+});
+
+/* SHOP */
 function openShop(){shop.classList.add("show")}
 function closeShop(){shop.classList.remove("show")}
-function scrollToInfo(){
-  document.getElementById("info").scrollIntoView({behavior:"smooth"});
-}
+
+/* EASTER EGG */
+let chaos=0;
+document.addEventListener("click",()=>{
+  chaos++;
+  if(chaos===10){
+    document.body.style.filter="hue-rotate(120deg)";
+    console.log("Chaos unlocked.");
+  }
+});
 
 console.log("%cYou’re early.","color:#ff4444;font-size:16px");
-console.log("%cSteam costs $100.","color:#777");
-console.log("%cThis site is alive.","color:#555");
+console.log("%cThis is not a normal site.","color:#777");
 </script>
 
 </body>
