@@ -9,96 +9,59 @@
 html,body{
   margin:0;
   padding:0;
-  background:#050509;
-  color:#eee;
-  font-family:Arial, Helvetica, sans-serif;
+  background:#07090f;
+  color:#e6e6eb;
+  font-family:Georgia, "Times New Roman", serif;
   overflow-x:hidden;
 }
 
-/* ================= LOADING ================= */
-#loader{
-  position:fixed;
-  inset:0;
-  background:#000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-  overflow:hidden;
-}
-
-#logo{
-  font-size:80px;
-  font-weight:900;
-  letter-spacing:12px;
-  color:#fff;
-  position:relative;
-  animation:shake 0.15s infinite;
-}
-
-@keyframes shake{
-  0%{transform:translate(0,0)}
-  25%{transform:translate(2px,-2px)}
-  50%{transform:translate(-2px,2px)}
-  75%{transform:translate(2px,2px)}
-  100%{transform:translate(0,0)}
-}
-
-.shard{
-  position:absolute;
-  background:#fff;
-  clip-path:polygon(0 0,100% 0,70% 100%);
-}
-
-/* ================= BACKGROUND ================= */
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:-1;
-}
-
-/* ================= SITE ================= */
-#site{
-  position:relative;
-  opacity:0;
-  transform:translateY(-200px);
-  transition:1.5s ease;
-  padding:120px 6%;
+section{
+  min-height:100vh;
+  padding:120px 10%;
+  box-sizing:border-box;
 }
 
 h1,h2{
-  letter-spacing:6px;
+  font-weight:300;
+  letter-spacing:4px;
 }
 
-.section{
-  margin:160px 0;
-  position:relative;
+h1{
+  font-size:64px;
 }
 
-.box{
-  position:absolute;
-  background:rgba(20,20,30,0.9);
-  border:1px solid rgba(255,255,255,0.1);
-  padding:18px;
-  width:260px;
-  backdrop-filter:blur(6px);
-  animation:float 6s ease-in-out infinite;
+h2{
+  font-size:40px;
+  margin-bottom:40px;
 }
 
-@keyframes float{
-  0%{transform:translateY(0)}
-  50%{transform:translateY(-25px)}
-  100%{transform:translateY(0)}
+p{
+  font-size:18px;
+  line-height:1.8;
+  max-width:720px;
+  opacity:.9;
+}
+
+.fade{
+  opacity:0;
+  transform:translateY(40px);
+  transition:1.6s ease;
+}
+
+.fade.visible{
+  opacity:1;
+  transform:translateY(0);
 }
 
 button{
-  background:#111;
-  border:1px solid #555;
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.4);
   color:#fff;
-  padding:16px 28px;
+  padding:14px 28px;
   font-size:16px;
+  letter-spacing:2px;
   cursor:pointer;
-  margin:12px;
+  transition:.4s;
 }
 
 button:hover{
@@ -106,112 +69,141 @@ button:hover{
   color:#000;
 }
 
-/* ================= CHAOS TEXT ================= */
-.small{
-  opacity:.6;
-  font-size:14px;
+/* HERO */
+#hero{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+}
+
+#hero h1{
+  font-size:72px;
+}
+
+#hero p{
+  margin:40px auto;
+  opacity:.7;
+}
+
+/* PARTICLES */
+canvas{
+  position:fixed;
+  inset:0;
+  z-index:-1;
 }
 </style>
 </head>
 
 <body>
 
-<div id="loader">
-  <div id="logo">ARLEG</div>
-</div>
-
 <canvas id="bg"></canvas>
 
-<div id="site">
+<section id="hero">
+  <h1 class="fade">ARLEG</h1>
+  <p class="fade">
+    A physics-driven combat sandbox where every limb matters.
+  </p>
+</section>
 
-  <h1>ARLEG</h1>
-  <p class="small">click anywhere to awaken sound</p>
+<section>
+  <h2 class="fade">The World</h2>
+  <p class="fade">
+    ARLEG takes place in a fractured combat arena where motion is unstable
+    and control is earned through practice. The world reacts to your input,
+    not scripted animations. Every movement feels physical, imperfect,
+    and alive.
+  </p>
+</section>
 
-  <!-- WHY ARLEG -->
-  <div class="section">
-    <h2>WHY ARLEG</h2>
-    <div class="box" style="top:40px;left:0">Mouse-driven combat feels physical.</div>
-    <div class="box" style="top:140px;left:320px">Every limb is independent.</div>
-    <div class="box" style="top:260px;left:120px">Physics > animations.</div>
-    <div class="box" style="top:380px;left:420px">Mistakes look funny, not scripted.</div>
-    <div class="box" style="top:520px;left:40px">You fight the controls.</div>
-    <div class="box" style="top:620px;left:300px">Sandbox chaos first.</div>
-  </div>
+<section>
+  <h2 class="fade">Controls</h2>
+  <p class="fade">
+    Left Click — Control Left Arm<br>
+    Right Click — Control Right Arm<br>
+    Q / E — Grab with respective arm<br>
+    R — Switch leg control
+  </p>
+</section>
 
-  <!-- CONTROLS -->
-  <div class="section">
-    <h2>CONTROLS</h2>
-    <div class="box" style="top:80px;left:60px">Hold LEFT CLICK — Left Arm</div>
-    <div class="box" style="top:200px;left:360px">Hold RIGHT CLICK — Right Arm</div>
-    <div class="box" style="top:340px;left:120px">Q / E — Grab</div>
-    <div class="box" style="top:460px;left:420px">R — Switch Legs</div>
-  </div>
+<section>
+  <h2 class="fade">What to Expect</h2>
 
-  <!-- WHAT TO EXPECT -->
-  <div class="section">
-    <h2>WHAT TO EXPECT</h2>
+  <p class="fade">
+    <strong>Coins & Progression</strong><br>
+    Coins can be earned by winning fights, completing missions,
+    surviving challenges, and discovering hidden objectives.
+    Coins may also be purchased for players who want quicker access
+    to cosmetics or experimental builds.
+  </p>
 
-    <div class="box" style="top:80px;left:0">
-      Coins are earned by winning fights, missions, challenges, and secrets.
-    </div>
+  <p class="fade">
+    <strong>Characters & Stats</strong><br>
+    Characters feature different attributes such as agility,
+    strength, endurance, grip power, and balance. These stats
+    affect movement speed, impact force, recovery time,
+    and grappling effectiveness.
+  </p>
 
-    <div class="box" style="top:220px;left:300px">
-      Coins can also be purchased for faster progression or cosmetics.
-    </div>
+  <p class="fade">
+    <strong>Story & Bosses</strong><br>
+    ARLEG’s story unfolds through environments, enemy behavior,
+    and boss encounters. Each boss represents a different fighting
+    philosophy and introduces new mechanics that reshape how
+    the game is played.
+  </p>
+</section>
 
-    <div class="box" style="top:360px;left:100px">
-      Characters have agility, strength, endurance, grip power, balance.
-    </div>
+<section>
+  <h2 class="fade">Why ARLEG</h2>
+  <p class="fade">
+    Combat is not animated — it is simulated.
+    Mistakes are visible. Success is earned.
+    The game is as much about mastering control
+    as it is about overcoming opponents.
+  </p>
+</section>
 
-    <div class="box" style="top:520px;left:420px">
-      Stats affect movement, impact force, recovery, and grappling.
-    </div>
+<section>
+  <h2 class="fade">Shop</h2>
+  <p class="fade">
+    Coins and suits will be available in the future.
+  </p>
+  <button>Coming Soon</button>
+</section>
 
-    <div class="box" style="top:680px;left:40px">
-      Story told through levels, bosses, and environments.
-    </div>
+<section>
+  <h2 class="fade">Download</h2>
+  <button>Alpha — Coming Soon</button>
+</section>
 
-    <div class="box" style="top:820px;left:360px">
-      Bosses represent different fighting philosophies and mechanics.
-    </div>
-  </div>
+<section>
+  <h2 class="fade">Platform</h2>
+  <p class="fade">
+    PC — Direct Download<br><br>
+    Steam — coming soon<br>
+    <em>(maybe)</em><br>
+    <em>(please donate)</em>
+  </p>
+</section>
 
-  <!-- SHOP -->
-  <div class="section">
-    <h2>SHOP</h2>
-    <button>Coins — Coming Soon</button>
-    <button>Suits — Coming Soon</button>
-    <p class="small">nothing works yet. calm down.</p>
-  </div>
-
-  <!-- DOWNLOAD -->
-  <div class="section">
-    <h2>DOWNLOAD</h2>
-    <button>Alpha — Coming Soon</button>
-  </div>
-
-  <!-- PLATFORM -->
-  <div class="section">
-    <h2>PLATFORM STATUS</h2>
-    <div class="box" style="top:100px;left:100px">
-      PC — Direct Download
-    </div>
-    <div class="box" style="top:260px;left:360px">
-      Steam<br><span class="small">(maybe)<br>(please donate)</span>
-    </div>
-  </div>
-
-  <footer style="margin:200px 0;text-align:center;opacity:.4">
-    ARLEG © Experimental Sandbox<br>
-    You were early.
-  </footer>
-
-</div>
+<footer style="padding:80px;text-align:center;opacity:.4">
+  ARLEG © Experimental Sandbox
+</footer>
 
 <script>
-/* ============ BACKGROUND CHAOS ============ */
-const c = document.getElementById("bg");
-const ctx = c.getContext("2d");
+/* Fade-in on scroll */
+const faders=document.querySelectorAll(".fade");
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add("visible");
+  });
+},{threshold:.2});
+faders.forEach(f=>obs.observe(f));
+
+/* Subtle background dust */
+const c=document.getElementById("bg");
+const ctx=c.getContext("2d");
 let w,h;
 function resize(){
   w=c.width=window.innerWidth;
@@ -220,27 +212,22 @@ function resize(){
 window.onresize=resize;
 resize();
 
-const particles=[];
-for(let i=0;i<160;i++){
-  particles.push({
+const dust=[];
+for(let i=0;i<120;i++){
+  dust.push({
     x:Math.random()*w,
     y:Math.random()*h,
-    r:Math.random()*3+1,
-    dx:(Math.random()-.5)*0.6,
-    dy:(Math.random()-.5)*0.6,
-    hue:Math.random()*360
+    r:Math.random()*2+0.5,
+    d:Math.random()*0.3+0.1
   });
 }
 
 function draw(){
   ctx.clearRect(0,0,w,h);
-  particles.forEach(p=>{
-    p.x+=p.dx;
-    p.y+=p.dy;
-    if(p.x<0||p.x>w) p.dx*=-1;
-    if(p.y<0||p.y>h) p.dy*=-1;
-    p.hue+=0.3;
-    ctx.fillStyle=`hsla(${p.hue},80%,60%,0.6)`;
+  ctx.fillStyle="rgba(200,200,255,0.15)";
+  dust.forEach(p=>{
+    p.y+=p.d;
+    if(p.y>h) p.y=0;
     ctx.beginPath();
     ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
     ctx.fill();
@@ -248,63 +235,6 @@ function draw(){
   requestAnimationFrame(draw);
 }
 draw();
-
-/* ============ INTRO SHATTER + SOUND ============ */
-const logo=document.getElementById("logo");
-const loader=document.getElementById("loader");
-let audioReady=false;
-let ctxAudio,rumble,thunder;
-
-function initAudio(){
-  if(audioReady) return;
-  audioReady=true;
-  ctxAudio=new AudioContext();
-
-  function noise(len){
-    const b=ctxAudio.createBuffer(1,len,ctxAudio.sampleRate);
-    const d=b.getChannelData(0);
-    for(let i=0;i<len;i++) d[i]=Math.random()*2-1;
-    return b;
-  }
-
-  thunder=ctxAudio.createBufferSource();
-  thunder.buffer=noise(ctxAudio.sampleRate*1.2);
-  const gain=ctxAudio.createGain();
-  gain.gain.value=0.3;
-  thunder.connect(gain).connect(ctxAudio.destination);
-  thunder.start();
-}
-
-document.addEventListener("click",initAudio,{once:true});
-
-setTimeout(()=>{
-  logo.style.animation="none";
-  for(let i=0;i<40;i++){
-    const s=document.createElement("div");
-    s.className="shard";
-    s.style.width=20+Math.random()*40+"px";
-    s.style.height=20+Math.random()*40+"px";
-    s.style.left="50%";
-    s.style.top="50%";
-    s.style.transform=`translate(-50%,-50%) rotate(${Math.random()*360}deg)`;
-    loader.appendChild(s);
-
-    let y=0,vy=Math.random()*4+3;
-    function fall(){
-      y+=vy;
-      s.style.transform=`translate(-50%,${y}px) rotate(${y*2}deg)`;
-      if(y<h) requestAnimationFrame(fall);
-    }
-    fall();
-  }
-
-  setTimeout(()=>{
-    loader.style.display="none";
-    document.getElementById("site").style.opacity=1;
-    document.getElementById("site").style.transform="translateY(0)";
-  },900);
-
-},1800);
 </script>
 
 </body>
