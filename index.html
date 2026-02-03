@@ -48,11 +48,14 @@ body{
 
 /* ===== SITE ===== */
 #site{
+  position: relative; /* <<< THIS IS THE FIX */
   opacity:0;
   transform:translateY(-140px);
   transition:1.6s ease;
   padding:140px 6%;
+  min-height:200vh;
 }
+
 #site.show{opacity:1;transform:translateY(0)}
 
 .intro{
