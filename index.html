@@ -6,290 +6,312 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* { box-sizing: border-box; font-family: monospace; }
-body {
-  margin: 0;
-  background: #040404;
-  color: #ddd;
-  overflow-x: hidden;
+*{box-sizing:border-box;font-family:monospace}
+body{
+  margin:0;
+  background:#030303;
+  color:#ddd;
+  overflow-x:hidden;
 }
 
-/* ===== LOADING ===== */
-#loader {
-  position: fixed;
-  inset: 0;
-  background: black;
-  color: #888;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 20;
-  animation: loaderOut 1s ease forwards;
-  animation-delay: 8s;
+/* ===== LOADER ===== */
+#loader{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at center,#0b0b0b,#000);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:50;
+  overflow:hidden;
 }
-@keyframes loaderOut {
-  to { opacity: 0; pointer-events: none; }
+#logo{
+  font-size:5rem;
+  letter-spacing:16px;
+  animation:stress 1.2s infinite;
 }
-#logo {
-  font-size: 5rem;
-  letter-spacing: 12px;
-  color: #eee;
-  animation: logoPulse 2s infinite;
+@keyframes stress{
+  0%{transform:scale(1);text-shadow:0 0 12px #ff3333}
+  50%{transform:scale(1.04);text-shadow:0 0 28px #3366ff}
+  100%{transform:scale(1);text-shadow:0 0 12px #ff3333}
 }
-@keyframes logoPulse {
-  0%,100% { opacity: 0.7; }
-  50% { opacity: 1; }
-}
-#boot {
-  margin-top: 20px;
-  font-size: 0.9rem;
-  opacity: 0.6;
-}
-#bar {
-  width: 220px;
-  height: 4px;
-  background: #111;
-  margin-top: 25px;
-  overflow: hidden;
-}
-#fill {
-  height: 100%;
-  width: 0;
-  background: #444;
-  animation: loadFill 7s ease forwards;
-}
-@keyframes loadFill {
-  0% { width: 0; }
-  30% { width: 20%; }
-  60% { width: 55%; }
-  80% { width: 70%; }
-  100% { width: 100%; }
-}
-
-/* ===== CANVAS ===== */
-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-}
+canvas.shards{position:absolute;inset:0}
 
 /* ===== MAIN ===== */
-main {
-  padding: 120px 10%;
-  opacity: 0;
-  animation: siteIn 1s ease forwards;
-  animation-delay: 8s;
+main{
+  padding:120px 10%;
+  opacity:0;
+  transform:translateY(-120px);
+  transition:1.6s cubic-bezier(.2,.9,.1,1);
 }
-@keyframes siteIn { to { opacity: 1; } }
+main.show{opacity:1;transform:translateY(0)}
 
-h2 {
-  margin-top: 90px;
-  border-left: 4px solid #333;
-  padding-left: 12px;
-}
-
-.card {
-  background: #0c0c0c;
-  border: 1px solid #222;
-  padding: 25px;
-  margin-top: 20px;
-  transition: 0.3s;
-}
-.card:hover {
-  transform: translateY(-6px) rotate(-0.3deg);
-  box-shadow: 0 0 30px rgba(255,255,255,0.04);
+h2{
+  margin-top:110px;
+  border-left:5px solid #333;
+  padding-left:16px;
 }
 
-/* ===== BUTTONS ===== */
-.buttons {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-top: 40px;
+.card{
+  background:#0c0c0c;
+  border:1px solid #1f1f1f;
+  padding:26px;
+  margin-top:22px;
+  opacity:0;
+  transform:translateY(60px);
+  animation:slam 1s ease forwards;
 }
-button {
-  background: #111;
-  color: #fff;
-  border: 1px solid #333;
-  padding: 15px 30px;
-  cursor: pointer;
+@keyframes slam{
+  0%{opacity:0;transform:translateY(80px)}
+  70%{opacity:1;transform:translateY(-6px)}
+  100%{transform:translateY(0)}
 }
-button:hover {
-  animation: shake 0.15s;
+
+.buttons{
+  display:flex;
+  gap:22px;
+  flex-wrap:wrap;
+  margin-top:50px;
 }
-@keyframes shake {
-  0% { transform: translate(0,0); }
-  50% { transform: translate(2px,-2px); }
-  100% { transform: translate(0,0); }
+button{
+  background:#111;
+  color:#fff;
+  border:1px solid #333;
+  padding:16px 34px;
+  cursor:pointer;
+  transition:.15s;
 }
-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+button:hover{
+  transform:scale(1.08) rotate(-.4deg);
+  box-shadow:0 0 18px rgba(255,80,80,.2);
+}
+button:disabled{
+  opacity:.35;
+  cursor:not-allowed;
 }
 
 /* ===== MODAL ===== */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  display: none;
-  align-items: center;
-  justify-content: center;
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.92);
+  display:none;
+  align-items:center;
+  justify-content:center;
 }
-.modal.show { display: flex; }
-.modal-content {
-  background: #111;
-  border: 1px solid #333;
-  padding: 40px;
-  text-align: center;
+.modal.show{display:flex}
+.modal-content{
+  background:#0f0f0f;
+  border:1px solid #333;
+  padding:42px;
+  max-width:520px;
+  animation:drift 4s infinite;
+}
+@keyframes drift{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-14px)}
 }
 
-footer {
-  margin-top: 160px;
-  opacity: 0.4;
-  text-align: center;
-}
+/* ===== BACKGROUND ===== */
+#bg{position:fixed;inset:0;z-index:-1}
 </style>
 </head>
 
 <body>
-<canvas id="c"></canvas>
 
 <div id="loader">
   <div id="logo">ARLEG</div>
-  <div id="boot">booting physics sandbox...</div>
-  <div id="bar"><div id="fill"></div></div>
+  <canvas class="shards"></canvas>
 </div>
 
-<main>
-  <p>
-    ARLEG is an experimental physics combat sandbox.
-    Control limbs directly. Stability is temporary.
-  </p>
+<canvas id="bg"></canvas>
 
-  <div class="buttons">
-    <button onclick="openShop()">SHOP</button>
-    <button onclick="scrollToInfo()">INFORMATION</button>
-    <button disabled>DOWNLOAD (COMING SOON)</button>
-  </div>
+<main id="site">
 
-  <h2 id="info">Controls</h2>
-  <div class="card">
-    <ul>
-      <li>Left Click (Hold) – Left arm</li>
-      <li>Right Click (Hold) – Right arm</li>
-      <li>Q – Grab with right arm</li>
-      <li>E – Grab with left arm</li>
-      <li>R – Switch leg control</li>
-    </ul>
-  </div>
+<p style="max-width:760px">
+ARLEG is a physics-driven combat sandbox.<br>
+You don’t trigger attacks.<br>
+You *become* the weapon.
+</p>
 
-  <h2>Tips</h2>
-  <div class="card">
-    <ul>
-      <li>Momentum beats precision.</li>
-      <li>Grabbing terrain is often stronger than attacking.</li>
-      <li>Losing balance is expected.</li>
-      <li>Every fight deforms differently.</li>
-    </ul>
-  </div>
+<p style="opacity:.55">
+No tutorials holding your hand.<br>
+No safe animations.<br>
+Only consequence.
+</p>
 
-  <h2>What to Expect</h2>
+<div class="buttons">
+  <button onclick="openShop()">SHOP</button>
+  <button onclick="scrollToInfo()">INFORMATION</button>
+  <button disabled title="Soon. Probably.">DOWNLOAD (COMING SOON)</button>
+</div>
 
-  <div class="card">
-    <strong>Coins & Progression</strong>
-    <p>
-      Coins are earned through victories, missions, sandbox challenges,
-      and special encounters. Optional purchasing may exist later, but
-      all gameplay progression is achievable through play.
-    </p>
-  </div>
+<h2 id="info">Controls</h2>
+<div class="card">
+<ul>
+<li>Left Click (Hold) – Left arm</li>
+<li>Right Click (Hold) – Right arm</li>
+<li>Q / E – Grab</li>
+<li>R – Switch leg control</li>
+</ul>
+</div>
 
-  <div class="card">
-    <strong>Characters & Stats</strong>
-    <p>
-      Characters differ in strength, agility, balance, and endurance.
-      Stats directly affect physics behavior — heavier bodies swing
-      harder but fall faster.
-    </p>
-  </div>
+<h2>Why ARLEG Exists</h2>
+<div class="card">
+<p>
+Games polish chaos away.<br>
+ARLEG keeps it.
+</p>
+<p>
+Every win is messy.<br>
+Every loss is physical.
+</p>
+</div>
 
-  <div class="card">
-    <strong>Story, Levels & Bosses</strong>
-    <p>
-      ARLEG’s story unfolds through distorted environments, escalating
-      physics challenges, and oppressive bosses. Each level introduces
-      new rules that intentionally break player expectations.
-    </p>
-  </div>
+<h2>Alpha / Demo</h2>
+<div class="card">
+<ul>
+<li>Unstable mechanics</li>
+<li>Unfair encounters</li>
+<li>Systems still forming</li>
+</ul>
+<p style="opacity:.55">
+If you want finished — wait.<br>
+If you want influence — don’t.
+</p>
+</div>
 
-  <footer>ARLEG © Experimental Sandbox</footer>
+<h2>What to Expect</h2>
+<div class="card">
+<strong>Progression</strong>
+<p>
+Coins earned through fights, missions, and challenges.
+Optional purchases may appear later — but mastery is earned,
+not bought.
+</p>
+</div>
+
+<div class="card">
+<strong>Stats</strong>
+<p>
+Strength affects impact. Agility affects recovery.
+Balance affects survival.
+Stats change physics — not UI numbers.
+</p>
+</div>
+
+<div class="card">
+<strong>Story</strong>
+<p>
+A broken world told through levels and bosses.
+No exposition dumps.
+The environment explains itself.
+</p>
+</div>
+
+<h2>Platform Status</h2>
+<div class="card">
+<p>
+<strong>PC (Direct)</strong><br>
+Sold directly to players who were curious enough to be here.
+</p>
+
+<p style="margin-top:22px">
+<strong>Steam</strong><br>
+Coming to Steam…<br>
+<span style="opacity:.6">(maybe)</span><br>
+<span style="opacity:.4">(please donate)</span>
+</p>
+</div>
+
+<footer style="margin-top:180px;opacity:.35;text-align:center">
+ARLEG © Experimental Sandbox<br>
+You weren’t supposed to find this yet.
+</footer>
+
 </main>
 
 <div class="modal" id="shop">
   <div class="modal-content">
     <h2>Shop</h2>
-    <p>Coins, suits, modifiers.</p>
-    <p><strong>Coming Soon</strong></p>
+    <p>Suits. Cosmetics. Modifiers.</p>
+    <p><strong>Not Ready.</strong></p>
     <button onclick="closeShop()">Close</button>
   </div>
 </div>
 
 <script>
-/* ===== BACKGROUND PHYSICS ===== */
-const canvas = document.getElementById("c");
-const ctx = canvas.getContext("2d");
-let w,h;
-function resize(){
-  w = canvas.width = innerWidth;
-  h = canvas.height = innerHeight;
-}
-addEventListener("resize", resize);
-resize();
+/* SHATTER INTRO */
+const loader=document.getElementById("loader");
+const site=document.getElementById("site");
+const c=document.querySelector(".shards");
+const ctx=c.getContext("2d");
+c.width=innerWidth;c.height=innerHeight;
 
-const balls = Array.from({length:40},()=>({
-  x:Math.random()*w,
-  y:Math.random()*h,
-  vx:(Math.random()-0.5)*2,
-  vy:(Math.random()-0.5)*2,
-  r:3+Math.random()*3
+let shards=[...Array(180)].map(()=>({
+  x:innerWidth/2,y:innerHeight/2,
+  vx:(Math.random()-.5)*18,
+  vy:(Math.random()-1)*18,
+  r:Math.random()*4+2
 }));
 
-let mouse={x:w/2,y:h/2};
-addEventListener("mousemove",e=>{
-  mouse.x=e.clientX;
-  mouse.y=e.clientY;
-});
+setTimeout(()=>{
+  document.getElementById("logo").style.display="none";
+  function explode(){
+    ctx.clearRect(0,0,c.width,c.height);
+    shards.forEach(p=>{
+      p.vy+=0.55;
+      p.x+=p.vx;p.y+=p.vy;
+      ctx.fillStyle=Math.random()>.5?"#ff3b3b":"#3b6bff";
+      ctx.beginPath();
+      ctx.moveTo(p.x,p.y);
+      ctx.lineTo(p.x+p.r*2,p.y+p.r);
+      ctx.lineTo(p.x-p.r,p.y+p.r*2);
+      ctx.fill();
+    });
+    requestAnimationFrame(explode);
+  }
+  explode();
+},1600);
 
-function animate(){
-  ctx.clearRect(0,0,w,h);
-  balls.forEach(b=>{
-    let dx=mouse.x-b.x, dy=mouse.y-b.y;
-    let d=Math.hypot(dx,dy)+1;
-    b.vx+=dx/d*0.015;
-    b.vy+=dy/d*0.015;
-    b.x+=b.vx; b.y+=b.vy;
-    if(b.x<0||b.x>w) b.vx*=-1;
-    if(b.y<0||b.y>h) b.vy*=-1;
-    ctx.beginPath();
-    ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
-    ctx.fillStyle="#222";
-    ctx.fill();
+setTimeout(()=>{
+  loader.style.display="none";
+  site.classList.add("show");
+},4200);
+
+/* LIVING BACKGROUND */
+const bg=document.getElementById("bg");
+const b=bg.getContext("2d");
+bg.width=innerWidth;bg.height=innerHeight;
+let pts=[...Array(120)].map(()=>({
+  x:Math.random()*bg.width,y:Math.random()*bg.height,
+  vx:(Math.random()-.5),vy:(Math.random()-.5)
+}));
+let m={x:bg.width/2,y:bg.height/2};
+addEventListener("mousemove",e=>{m.x=e.clientX;m.y=e.clientY});
+function loop(){
+  b.clearRect(0,0,bg.width,bg.height);
+  pts.forEach(p=>{
+    let dx=m.x-p.x,dy=m.y-p.y;
+    p.vx+=dx*.000008;p.vy+=dy*.000008;
+    p.x+=p.vx;p.y+=p.vy;
+    b.fillStyle="rgba(120,80,255,.22)";
+    b.fillRect(p.x,p.y,2,2);
   });
-  requestAnimationFrame(animate);
+  requestAnimationFrame(loop);
 }
-animate();
+loop();
 
-/* ===== UI ===== */
-function openShop(){ shop.classList.add("show"); }
-function closeShop(){ shop.classList.remove("show"); }
+function openShop(){shop.classList.add("show")}
+function closeShop(){shop.classList.remove("show")}
 function scrollToInfo(){
   document.getElementById("info").scrollIntoView({behavior:"smooth"});
 }
 
-/* ===== EASTER ===== */
-console.log("%cARLEG ONLINE","color:#ff4444;font-size:14px");
+console.log("%cYou’re early.","color:#ff4444;font-size:16px");
+console.log("%cSteam costs $100.","color:#777");
+console.log("%cThis site is alive.","color:#555");
 </script>
+
 </body>
 </html>
